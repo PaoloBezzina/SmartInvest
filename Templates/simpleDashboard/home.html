@@ -1,0 +1,135 @@
+<!--https://codepen.io/rizwanahmed19/pen/KrYvwj-->
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="style-sheet.css">
+</head>
+
+<header>
+  <title>My Dashboard</title>
+  <div class="logo">Text Analysis<span>Source</span></div>
+</header>
+
+<body>
+  <div class="nav-btn">Menu</div>
+  <div class="container">
+
+    <div class="sidebar">
+      <nav>
+        <a href="home.html">Text Analysis<span>Task 1</span></a>
+        <ul>
+          <li class="active"><a href="home.html">Dashboard</a></li>
+          <li class=""><a href="home.html">Crypto</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="main-content">
+      <h1>Dashboard</h1>
+
+      <!--Bubble Chart-->
+      <div class="panel-wrapper">
+        <div class="panel-head">
+          Bubble Chart
+        </div>
+
+        <div class="panel-body">
+          Bubble Chart Goes Here
+          <div id="bubble-chart">
+
+            <script src="https://d3js.org/d3-selection-multi.v1.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.6.0/d3.min.js"></script>
+            <script type="text/javascript" src="bubble.js"></script>
+            <script>
+
+              d3.json('users.json', function (error, data) {
+                if (error) {
+                  console.error('Error getting or parsing the data.');
+                  throw error;
+                }
+                var chart = bubbleChart().width(600).height(400).title("Users");
+                // selection.datum() returns the bound datum for the first element in the selection and doesn't join the specified array of data with the selected elements
+                d3.select('#bubble-chart').datum(data).call(chart);
+              });
+
+            </script>
+          </div>
+        </div>
+
+      </div>
+
+      <!--Keyword Cloud-->
+      <div class="panel-wrapper">
+        <div class="panel-head">
+          Keyword Cloud
+        </div>
+
+        <div class="panel-body">
+          Keyword Cloud Goes Here
+          <div id="cloud">
+            <script src="https://d3js.org/d3.v3.min.js"></script>
+            <script src="https://github.com/jasondavies/d3-cloud/tree/master/build/d3.layout.cloud.js"></script>
+            <script type="text/javascript" src="d3.layout.cloud.js"></script>
+            <script>
+              var user = "grace.trent@enron.com"
+              d3.json('keyword_cloud.json', function (error, data) {
+
+                // get words as a list of objects of the form {text: 'asdf', size: 5}
+
+                var items = data[user]
+                var words = [];
+                var sizes = [];
+
+                items.forEach(element => {
+                  words.push(element[0])
+                  sizes.push(element[1])
+                });
+
+                console.log(words);
+                console.log(sizes);
+
+                words = words.map(function (word) {
+                  return {
+                    text: word,
+                    size: 12
+                  }
+                }); // now it has the correct format, but this is just an example
+
+                // then use it as input to the layout
+                d3.layout.cloud().size([300, 300])
+                  .words(words)
+                  .style("font-size", function (d) { return d.size + "px"; });
+
+              });
+            </script>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- JavaScript Directed Graph-->
+      <div class="panel-wrapper">
+        <div class="panel-head">
+          Force Directed Graph
+        </div>
+        <div class="panel-body">
+          Force Directed Graph Goes Here
+          <div id="force-directed">
+            <script src="https://d3js.org/d3.v3.min.js"></script>
+            <script type="text/javascript" src="forcedirected.js"></script>
+          </div>
+        </div>
+      </div>
+</body>
+
+<!--
+<div class="tooltip">
+  <img alt="" />
+  <div>
+    <a></a>
+    <span></span>
+  </div>
+</div>
+-->
