@@ -17774,6 +17774,11 @@ a.text-secondary:focus
     color: #2dce89 !important;
 }
 
+.text-failure
+{
+    color: #f73859 !important;
+}
+
 a.text-success:hover,
 a.text-success:focus
 {
