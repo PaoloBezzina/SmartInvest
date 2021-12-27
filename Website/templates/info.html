@@ -1,0 +1,62 @@
+<!--https://codepen.io/rizwanahmed19/pen/KrYvwj-->
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Getting bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style-sheet.css') }}">
+</head>
+
+<header>
+    <title>SmartInvest - An Investment Simulation Environment</title>
+    <!-- Favicon -->
+    <link rel="icon" href="{{url_for('static',filename='assets/smartInvestFavicon.png')}}" type="image/png">
+</header>
+
+<body>
+    <div class="nav-btn">Menu</div>
+    <div class="container">
+
+        <div class="sidebar">
+            <nav>
+                <a href="dashboard.html">
+                    <img src="{{url_for('static',filename='assets/smartInvestLogo.png')}}" alt="SmartInvest">
+                    <!-- <span>Investment Simulation Environment</span> -->
+                </a>
+                <ul>
+                    <li class=""><a href="dashboard.html">Dashboard</a></li>
+                    <li class=""><a href="crypto.html">Crypto</a></li>
+                    <li class=""><a href="stocks.html">Stocks</a></li>
+                    <li class="active"><a href="info.html">Info</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- PAGE CONTENT -->
+        <div class="main-content">
+            <h1>The Story</h1>
+
+            <!-- date selection -->
+            <div class="date-selection">
+                <p>
+                    You are a student receiving a monthly stipend and your aim is to budget this income in the best way possible. You can either leave the money in the bank with just a small interest rate, or you can invest this money, making the money work for you, whilst
+                    also considering your monthly expenses. However, be aware that Stock and Crypto prices can fluctuate drastically and the value of your investment may go up, as well as down or even equal to 0.
+                </p>
+                <p>
+                    The aim of this app is to educate yourself about the risks of investing blindly without knowing what you are doing and to promote good investment practices. Although this is a simulation, it is based on real life stock and cryptocurrency data and provides
+                    a risk free environment to become familiar with the benefits, but also the unpredictability and dangers of investments.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>

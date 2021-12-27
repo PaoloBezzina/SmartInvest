@@ -1,0 +1,22 @@
+[{
+        "code": "BTC",
+        "title": "Bitcoin",
+        "value": "50471.19",
+        "href": "/simulate",
+        "info": "https://coinmarketcap.com/currencies/bitcoin/"
+    },
+    {
+        "code": "ADA",
+        "title": "Cardano",
+        "value": "1.396",
+        "href": "/simulate",
+        "info": "https://coinmarketcap.com/currencies/cardano/"
+    },
+    {
+        "code": "ETH",
+        "title": "Etherium",
+        "value": "3581.6649",
+        "href": "/simulate",
+        "info": "https://coinmarketcap.com/currencies/ethereum/"
+    }
+]
