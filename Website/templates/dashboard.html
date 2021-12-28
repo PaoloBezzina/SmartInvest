@@ -47,7 +47,7 @@
             <h1>Dashboard</h1>
 
             <!-- date selection -->
-            <div class="date-selection col-sm-4">
+            <div class="date-selection col-sm-5">
                 <!-- form option -->
                 <!-- 
                 <form action="#">
@@ -59,22 +59,56 @@
                 -->
 
                 <!-- random date option -->
-                <p>Date: <span id="date-generated"></span></p>
-                <script src="{{url_for('static',filename='scripts/date-selection.js')}}"></script>
+                <p>Date: <span id="date-generated">{{date}}</span></p>
+                <!-- <script src="{{url_for('static',filename='scripts/date-selection.js')}}"></script> -->
+            </div>
+
+            <div class="col-sm-offset-3 col-sm-4">
+                <form action="/restart">
+                    <input class="btn btn-primary" type="submit" value="Refresh Enivornemt" />
+                </form>
             </div>
 
             <!-- Stocks and crypto to simulate -->
             <div class="container col-sm-12">
-                <table id="table" data-toggle="table" data-toolbar="#toolbar" data-height="460">
+                <table id="wallet-table" class="table table-striped">
                     <thead>
                         <tr>
-                            <th data-field="id">Item ID</th>
-                            <th data-field="name">Item Name</th>
-                            <th data-field="price">Item Price</th>
-                            <th data-field="units">Units Owned</th>
+                            <th scope="col">Code</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Units Owned</th>
+                            <th scope="col">Value</th>
+                            <th scope="col">Type</th>
                         </tr>
                     </thead>
+                    <tbody id="wallet-table-body">
+                    </tbody>
                 </table>
+                <script id="wallet-script" data-file-path="{{url_for('static',filename='json/walletListings.json')}}" src="{{url_for('static',filename='scripts/wallet.js')}}"></script>
+            </div>
+
+            <!-- button which redirects to /evaluate onclick -->
+            <div class="col-sm-offset-3 col-sm-4">
+                <form action="/evaluate">
+                    <input class="btn btn-primary" type="submit" value="Evaluate" />
+                </form>
+            </div>
+
+            <div class="col-sm-4">
+                <!-- Trigger/Open The Modal -->
+                <button id="myBtn">Simulate</button>
+                <!-- The Modal -->
+                <div id="myModal" class="modal">
+
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <p>You invested €<span id="invested-ammount">xx</span> back in <span id="invested-date">xx/xx/xxxx</span>, which has now amounted to €<span id="investment-outcome">x</span></p>
+                    </div>
+                </div>
+                <script id="modal-script" src="{{url_for('static',filename='scripts/testmodal.js')}}"></script>
+
             </div>
         </div>
     </div>

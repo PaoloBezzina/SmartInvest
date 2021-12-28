@@ -4,6 +4,10 @@ function randomDate(start, end) {
 
 let dateDisp = document.getElementById("date-generated");
 
+var date = randomDate(new Date(2019, 0, 1), new Date(2021, 10, 31));
+dateDisp.innerHTML = date.toLocaleDateString();
+console.log(date);
+
 window.onload = function() {
     var date = randomDate(new Date(2019, 0, 1), new Date(2021, 10, 31));
     dateDisp.innerHTML = date.toLocaleDateString();

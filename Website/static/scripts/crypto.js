@@ -2,49 +2,87 @@ let cardContainer;
 
 let createTaskCard = (cryptoListing) => {
     let card = document.createElement("div");
-    card.className = "card col-sm-5 cursor-pointer";
+    card.className = "card col-sm-5 cursor-pointer align-self-center d-flex justify-content-between";
 
     let cardBody = document.createElement("div");
     cardBody.className = "card-body";
 
-    let code = document.createElement("h5");
-    code.className = "card-title";
+    let code = document.createElement("h3");
+    code.className = "card-title col-sm-2";
+    code.style.marginTop = "10px";
+    code.style.marginBottom = "20px";
     code.innerHTML = cryptoListing.code;
 
-    let title = document.createElement("h5");
-    title.className = "card-title";
+    let title = document.createElement("h4");
+    title.className = "card-title col-sm-4 text-left";
     title.innerText = cryptoListing.title;
 
-    let value = document.createElement("p");
-    value.className = "card-text";
-    value.innerText = "Value: €" + cryptoListing.value;
-
     let info = document.createElement("a");
-    info.className = "btn btn-primary";
+    info.className = "btn btn-primary col-sm-offset-3 col-sm-2";
     info.innerText = "Info";
     info.onclick = function() {
         window.open(cryptoListing.info, "_blank");
     };
 
+    let value = document.createElement("p");
+    value.className = "card-text col-sm-12";
+    value.innerText = "Value: €" + cryptoListing.value;
+
+    let formBody = document.createElement("div");
+    cardBody.className = "card-body ml-auto";
+
     let form = document.createElement("form");
     form.action = cryptoListing.href;
     form.method = "post";
 
-    let button = document.createElement("button");
-    button.className = "btn btn-primary";
-    button.type = "submit";
-    button.name = "coin-code";
-    button.value = cryptoListing.code;
-    button.innerText = "Simulate";
+    let amountText = document.createElement("p");
+    amountText.className = "col-sm-3 float-right";
+    amountText.innerText = "Amount (€): ";
 
+    let button = document.createElement("button");
+    button.className = "btn btn-primary col-sm-offset-3 col-sm-2 float-right";
+    button.type = "submit";
+    button.name = "code";
+    button.value = cryptoListing.code;
+    button.innerText = "Purchase";
     button.href = cryptoListing.href;
 
+    let amount = document.createElement("input");
+    amount.className = "col-sm-3 float-left";
+    amount.type = "number";
+    amount.name = "amount-purchased";
+    amount.value = "0";
+    amount.min = "1";
+    /* amount.max = "5000"; */
+
+    let priceSend = document.createElement("input");
+    priceSend.className = "hidden";
+    priceSend.type = "hidden";
+    priceSend.style.display = "none";
+    priceSend.name = "price";
+    priceSend.value = cryptoListing.value;
+
+    let typeSend = document.createElement("input");
+    typeSend.className = "hidden";
+    typeSend.type = "hidden";
+    typeSend.style.display = "none";
+    typeSend.name = "type";
+    typeSend.value = "Crypto";
+
+    form.appendChild(amountText);
+    form.appendChild(amount);
     form.appendChild(button);
+    form.appendChild(priceSend);
+    form.appendChild(typeSend);
+
+    formBody.appendChild(form);
+
     cardBody.appendChild(code);
     cardBody.appendChild(title);
-    cardBody.appendChild(value);
     cardBody.appendChild(info);
-    cardBody.appendChild(form);
+    cardBody.appendChild(value);
+    cardBody.appendChild(formBody);
+
     card.appendChild(cardBody);
     cardContainer.appendChild(card);
 };
