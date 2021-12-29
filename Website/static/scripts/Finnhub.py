@@ -243,5 +243,37 @@ def initialiseFiles(date):
     convertCryptoToJSON(crypto_codes_list, crypto_names_list, day, month, year)
     convertStocksToJSON(stock_codes_list, stock_names_list, day, month, year)
 
+
+global amountInWallet
+amountInWallet = 5000
+
+def getMoney():
+    return amountInWallet
+
+def setMoney(amount):
+    global amountInWallet
+    amountInWallet = amount
+
+def subtractMoney(amount):
+    global amountInWallet
+    amountInWallet -= amount
+    return amountInWallet
+
+def subtractCurrentAssets():
+    #read data from json file
+    with open('static/json/walletListings.json') as f:
+        data = json.load(f)
+
+        #if data is empty, return
+        if len(data) == 0:
+            return
+        else:
+            #subtract current assets
+            for transaction in data:
+
+                amount = transaction['value']
+                subtractMoney(amount)
+
+
 def __init__():
     pass

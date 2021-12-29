@@ -48,12 +48,14 @@ let createTaskCard = (cryptoListing) => {
     button.href = cryptoListing.href;
 
     let amount = document.createElement("input");
+    amount.id = "amountInput";
     amount.className = "col-sm-3 float-left";
     amount.type = "number";
     amount.name = "amount-purchased";
     amount.value = "0";
     amount.min = "1";
-    /* amount.max = "5000"; */
+    amount.max = "5000";
+    getMoney();
 
     let priceSend = document.createElement("input");
     priceSend.className = "hidden";
@@ -133,6 +135,21 @@ let initListOfCrypto = () => {
             });
     }
 };
+
+function getMoney() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("money-in-wallet").innerHTML = "€" + this.responseText;
+            /* find all elements with id amountInput */
+            document.querySelectorAll("#amountInput").forEach((element) => {
+                element.max = this.responseText;
+            });
+        }
+    };
+    xhttp.open("GET", "/get-money/", true);
+    xhttp.send();
+}
 
 window.onload = function() {
     initListOfCrypto();

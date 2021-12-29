@@ -17,6 +17,8 @@ global randDate
 start_date = datetime.date(2021, 1, 1)
 end_date = datetime.date(2021, 12, 31)
 
+startAmount = 5000
+
 def getRandomDate():
     global randDate
     global dateString
@@ -34,10 +36,10 @@ def getRandomDate():
 
 dateString, randDate = getRandomDate()
 
-
 @app.before_first_request
 def before_first_request():
     initialiseFiles(randDate)
+    subtractCurrentAssets()
 
 @app.route('/')
 def index():
@@ -67,9 +69,11 @@ def load_info():
 @app.route('/restart')
 def refreshEnvironment():
     clearWalletListings()
+    clearEvaluation();
     global dateString
     dateString, randDate = getRandomDate()
     initialiseFiles(randDate)
+    setMoney(startAmount)
     return redirect('/dashboard.html')
 
 
@@ -77,20 +81,43 @@ def refreshEnvironment():
 def addListing():
     if request.method == 'POST':
         code = request.form['code']
-        amount = request.form['amount-purchased']
+        amountInvested = request.form['amount-purchased']
         price = request.form['price']
         type = request.form['type']
 
         print(code)
-        print(amount)
+        print(amountInvested)
         print(price)
         print(type)
 
-        addTransaction(code, amount, price, type)
+        # get amount to subtract from wallet
+        amountToSubtract = float(amountInvested)
+
+        # get current wallet money
+        walletAmount = float(getMoney())
+
+        # if there is enough money remove money from wallet
+        if walletAmount >= amountToSubtract:
+            subtractMoney(amountToSubtract)
+            addTransaction(code, amountInvested, price, type)
+
+            #check if request came from /crypto.html or /stocks.html
+            if type == "Stocks":
+                # flash message to inform user of successful transaction after redirect
+                flash('You have successfully purchased ' + amountInvested + ' shares of ' + code + ' at ' + price + ' per share.')
+                return redirect('/stocks.html')
+            else:
+                flash('You have successfully purchased ' + amountInvested + ' shares of ' + code + ' at ' + price + ' per share.')
+                return redirect('/crypto.html')
+
+        else:
+            flash(u"Not enough money", "error")
+        
     else:
         print("error getting coin code")
 
     try:
+        
         return ('', 204)
     except Exception as e:
         return str(e)
@@ -98,23 +125,19 @@ def addListing():
 
 @app.route('/evaluate/', methods=['GET', 'POST'])
 def evaluate():
-    evaluation(2000)
+    evaluation(startAmount-float(getMoney()))
     try:
         return ('', 204)
     except Exception as e:
         return str(e)
 
 
-@app.route("/get-bitcoin/", methods=['GET', 'POST'])
-def process_file():
-
-    #prices = getAllCryptoPrices(['BTC'], 8, 12, 2021)
-
+@app.route("/get-money/", methods=['GET', 'POST'])
+def getmoney():
     try:
-        return ('', 204)
+        return (str(getMoney()))
     except Exception as e:
         return str(e)
-
 
 def clearWalletListings():
     print("Clearing wallet listings")
@@ -122,6 +145,15 @@ def clearWalletListings():
     text_file.write("[]")
     text_file.close()
 
+def clearEvaluation():
+    print("Clearing Evaluation")
+    text_file = open("static/json/evaluation.json", "wt")
+    text_file.write("[]")
+    text_file.close()
+
+    text_file = open("static/json/total_evaluation.json", "wt")
+    text_file.write("[]")
+    text_file.close()
 
 # set main method
 if __name__ == "__main__":

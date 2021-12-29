@@ -44,7 +44,11 @@
 
         <!-- PAGE CONTENT -->
         <div class="main-content">
-            <h1>Crypto</h1>
+            <h1 class="col-sm-3">Crypto</h1>
+            <div class="col-sm-offset-4 col-sm-3 col-sm-offset-2">
+                <!-- display text with id money-in-wallet -->
+                <p>Money in Wallet: <span class="h2" id="money-in-wallet">{{money}}</span></p>
+            </div>
             <script id="crypto-script" data-file-path="{{url_for('static',filename='json/cryptoListings.json')}}" src="{{url_for('static',filename='scripts/crypto.js')}}"></script>
             <div id="crypto-card-container" class="row" id="card-container"></div>
         </div>
