@@ -243,5 +243,20 @@ def initialiseFiles(date):
     convertCryptoToJSON(crypto_codes_list, crypto_names_list, day, month, year)
     convertStocksToJSON(stock_codes_list, stock_names_list, day, month, year)
 
+
+global amountInWallet
+
+def getMoney():
+    return amountInWallet
+
+def setMoney(amount):
+    global amountInWallet
+    amountInWallet = amount
+
+def subtractMoney(amount):
+    global amountInWallet
+    amountInWallet -= amount
+    return amountInWallet
+    
 def __init__():
     pass

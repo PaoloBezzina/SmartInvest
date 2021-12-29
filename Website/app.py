@@ -17,6 +17,8 @@ global randDate
 start_date = datetime.date(2021, 1, 1)
 end_date = datetime.date(2021, 12, 31)
 
+startAmount = 5000
+
 def getRandomDate():
     global randDate
     global dateString
@@ -34,9 +36,9 @@ def getRandomDate():
 
 dateString, randDate = getRandomDate()
 
-
 @app.before_first_request
 def before_first_request():
+    setMoney(startAmount)
     initialiseFiles(randDate)
 
 @app.route('/')
@@ -67,9 +69,11 @@ def load_info():
 @app.route('/restart')
 def refreshEnvironment():
     clearWalletListings()
+    print("test")
     global dateString
     dateString, randDate = getRandomDate()
     initialiseFiles(randDate)
+    setMoney(startAmount)
     return redirect('/dashboard.html')
 
 
@@ -87,6 +91,7 @@ def addListing():
         print(type)
 
         addTransaction(code, amount, price, type)
+        
     else:
         print("error getting coin code")
 
@@ -105,16 +110,41 @@ def evaluate():
         return str(e)
 
 
-@app.route("/get-bitcoin/", methods=['GET', 'POST'])
-def process_file():
+@app.route("/get-money/", methods=['GET', 'POST'])
+def getmoney():
 
-    #prices = getAllCryptoPrices(['BTC'], 8, 12, 2021)
+    print(getMoney())
 
     try:
         return ('', 204)
     except Exception as e:
         return str(e)
 
+
+@app.route("/subtract-money/", methods=['GET', 'POST'])
+def subtractmoney():
+    print("Subtracting money")
+
+    # get amount to subtract
+    if request.method == 'POST':
+        amount = request.form['amount']
+        amount = int(amount)
+
+    # get current wallet money
+    wallet = int(getMoney())
+
+    # if there is enough money remove money from wallet
+    if wallet >= amount:
+        subtractMoney(amount)
+        print("Subtracted " + str(amount) + " from wallet")
+        print("New amount " + str(getMoney()) + " in wallet")
+    else:
+        print("Not enough money")
+
+    try:
+        return ('', 204)
+    except Exception as e:
+        return str(e)
 
 def clearWalletListings():
     print("Clearing wallet listings")
