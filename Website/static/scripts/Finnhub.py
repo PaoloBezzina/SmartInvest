@@ -258,6 +258,22 @@ def subtractMoney(amount):
     global amountInWallet
     amountInWallet -= amount
     return amountInWallet
-    
+
+def subtractCurrentAssets():
+    #read data from json file
+    with open('static/json/walletListings.json') as f:
+        data = json.load(f)
+
+        #if data is empty, return
+        if len(data) == 0:
+            return
+        else:
+            #subtract current assets
+            for transaction in data:
+
+                amount = transaction['value']
+                subtractMoney(amount)
+
+
 def __init__():
     pass

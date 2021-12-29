@@ -25,7 +25,7 @@
 
 <body>
     <div class="nav-btn">Menu</div>
-    <div class="container">
+    <div class="container" style="height: auto;">
 
         <div class="sidebar">
             <nav>
@@ -43,11 +43,11 @@
         </div>
 
         <!-- PAGE CONTENT -->
-        <div class="main-content">
+        <div class="main-content d-flex">
             <h1>Dashboard</h1>
 
             <!-- date selection -->
-            <div class="date-selection col-sm-5">
+            <div class="date-selection col-sm-4 align-self-center">
                 <!-- form option -->
                 <!-- 
                 <form action="#">
@@ -63,30 +63,20 @@
                 <!-- <script src="{{url_for('static',filename='scripts/date-selection.js')}}"></script> -->
             </div>
 
-            <!-- <div class="col-sm-3">
-                <form action="/subtract-money" method="post">
-                    <div class="form-group">
-                        <label for="amount">Amount:</label>
-                        <input type="number" class="form-control" id="amount" name="amount" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Subtract Money</button>
-                </form>
-                <form action="/get-money" method="post">
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Get Money</button>
-                    </div>
-                </form>
-            </div> -->
-
-            <div class="col-sm-3">
+            <div class="col-sm-3  align-self-center">
                 <!-- display text with id money-in-wallet -->
-                <p>Money in Wallet: <span class="h2" id="money-in-wallet">{{money}}</span></p>
+                <p>Money in Wallet: <span class="h2" id="money-in-wallet" style="margin-top: 10px; margin-bottom: 10px;">{{money}}</span></p>
             </div>
 
-            <div class="col-sm-4">
+            <div class="col-sm-3  align-self-center">
                 <form action="/restart">
                     <input class="btn btn-primary" type="submit" value="Refresh Enivornemt" />
                 </form>
+            </div>
+
+            <div class="col-sm-12">
+                <h3>Wallet</h3>
+                <p>The current assets you own</p>
             </div>
 
             <!-- Stocks and crypto to simulate -->
@@ -108,28 +98,50 @@
                 <script id="wallet-script" data-file-path="{{url_for('static',filename='json/walletListings.json')}}" src="{{url_for('static',filename='scripts/wallet.js')}}"></script>
             </div>
 
+            <!-- a dive with a title and subtitle -->
+            <div class="col-sm-4">
+                <h3>Simulation</h3>
+                <p>Simulate the crypto and stock purchased:</p>
+            </div>
+
             <!-- button which redirects to /evaluate onclick -->
-            <div class="col-sm-offset-3 col-sm-4">
-                <form action="/evaluate">
-                    <input class="btn btn-primary" type="submit" value="Evaluate" />
+            <div class="col-sm-4">
+                <form id="evaluate-form" action="" onsubmit="javascript: return SubmitForm();">
+                    <input id="evaluate-button" class="btn btn-primary" type="submit" value="Simulate" />
                 </form>
             </div>
 
-            <div class="col-sm-4">
-                <!-- Trigger/Open The Modal -->
-                <button id="myBtn">Simulate</button>
-                <!-- The Modal -->
-                <div id="myModal" class="modal">
+            <!-- Stocks and crypto to simulate -->
+            <div class="container col-sm-12">
+                <table id="evaluation-table" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Code</th>
+                            <th scope="col">Past Value</th>
+                            <th scope="col">Current Value</th>
+                            <th scope="col">Past Price</th>
+                            <th scope="col">Current Price</th>
+                            <th scope="col">ROI - Value</th>
+                            <th scope="col">ROI- Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody id="evaluation-table-body">
+                    </tbody>
+                </table>
+                <script id="evaluation-script" data-file-path="{{url_for('static',filename='json/evaluation.json')}}" src="{{url_for('static',filename='scripts/updateEvaluation.js')}}"></script>
+            </div>
 
-                    <!-- Modal content -->
+            <!-- <div class="col-sm-4">
+                <button id="myBtn">Simulate</button>
+                <div id="myModal" class="modal">
                     <div class="modal-content">
                         <span class="close">&times;</span>
-                        <p>You invested €<span id="invested-ammount">xx</span> back in <span id="invested-date">xx/xx/xxxx</span>, which has now amounted to €<span id="investment-outcome">x</span></p>
-                    </div>
-                </div>
-                <script id="modal-script" src="{{url_for('static',filename='scripts/testmodal.js')}}"></script>
-
+                                    <p>You invested €<span id="invested-ammount">xx</span> back in <span id="invested-date">xx/xx/xxxx</span>, which has now amounted to €<span id="investment-outcome">x</span></p>
+                                </div>
             </div>
+            <script id="modal-script" src="{{url_for('static',filename='scripts/testmodal.js')}}"></script>
+        </div> -->
+
         </div>
     </div>
 </body>

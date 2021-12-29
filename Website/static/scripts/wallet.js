@@ -1,4 +1,4 @@
-let cardContainer;
+let tableContainer;
 
 let createTaskCard = (walletListing) => {
     let rowEntry = document.createElement("tr");
@@ -22,13 +22,14 @@ let createTaskCard = (walletListing) => {
     let type = document.createElement("td");
     type.innerText = walletListing.type;
 
+    console.log("TEST");
     rowEntry.appendChild(code);
     rowEntry.appendChild(title);
     rowEntry.appendChild(price);
     rowEntry.appendChild(units);
     rowEntry.appendChild(value);
     rowEntry.appendChild(type);
-    cardContainer.appendChild(rowEntry);
+    tableContainer.appendChild(rowEntry);
 };
 
 /* "json/walletListings.json" */
@@ -62,14 +63,14 @@ let initList = () => {
                 walletList = data;
                 console.log(walletList);
 
-                if (cardContainer) {
+                if (tableContainer) {
                     document
                         .getElementById("wallet-table-body")
-                        .replaceWith(cardContainer);
+                        .replaceWith(tableContainer);
                     return;
                 }
 
-                cardContainer = document.getElementById("wallet-table-body");
+                tableContainer = document.getElementById("wallet-table-body");
 
                 walletList.forEach((walletListing) => {
                     createTaskCard(walletListing);
@@ -86,10 +87,15 @@ function getMoney() {
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             document.getElementById("money-in-wallet").innerHTML = "€" + this.responseText;
+            /* find all elements with id amountInput */
+            document.querySelectorAll("#amountInput").forEach((element) => {
+                element.max = this.responseText;
+            });
         }
     };
     xhttp.open("GET", "/get-money/", true);
     xhttp.send();
+
 }
 
 window.onload = function() {

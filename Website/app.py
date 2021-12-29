@@ -39,6 +39,7 @@ dateString, randDate = getRandomDate()
 @app.before_first_request
 def before_first_request():
     initialiseFiles(randDate)
+    subtractCurrentAssets()
 
 @app.route('/')
 def index():
@@ -68,7 +69,7 @@ def load_info():
 @app.route('/restart')
 def refreshEnvironment():
     clearWalletListings()
-    print("test")
+    clearEvaluation();
     global dateString
     dateString, randDate = getRandomDate()
     initialiseFiles(randDate)
@@ -100,15 +101,23 @@ def addListing():
             subtractMoney(amountToSubtract)
             addTransaction(code, amountInvested, price, type)
 
-            print("Subtracted " + str(amountToSubtract) + " from wallet")
-            print("New amount " + str(getMoney()) + " in wallet")
+            #check if request came from /crypto.html or /stocks.html
+            if type == "Stocks":
+                # flash message to inform user of successful transaction after redirect
+                flash('You have successfully purchased ' + amountInvested + ' shares of ' + code + ' at ' + price + ' per share.')
+                return redirect('/stocks.html')
+            else:
+                flash('You have successfully purchased ' + amountInvested + ' shares of ' + code + ' at ' + price + ' per share.')
+                return redirect('/crypto.html')
+
         else:
-            print("Not enough money")
+            flash(u"Not enough money", "error")
         
     else:
         print("error getting coin code")
 
     try:
+        
         return ('', 204)
     except Exception as e:
         return str(e)
@@ -116,7 +125,7 @@ def addListing():
 
 @app.route('/evaluate/', methods=['GET', 'POST'])
 def evaluate():
-    evaluation(2000)
+    evaluation(startAmount-float(getMoney()))
     try:
         return ('', 204)
     except Exception as e:
@@ -125,37 +134,8 @@ def evaluate():
 
 @app.route("/get-money/", methods=['GET', 'POST'])
 def getmoney():
-
-    print(getMoney())
-
     try:
         return (str(getMoney()))
-    except Exception as e:
-        return str(e)
-
-
-@app.route("/subtract-money/", methods=['GET', 'POST'])
-def subtractmoney():
-    print("Subtracting money")
-
-    # get amount to subtract
-    if request.method == 'POST':
-        amount = request.form['amount']
-        amount = int(amount)
-
-    # get current wallet money
-    wallet = int(getMoney())
-
-    # if there is enough money remove money from wallet
-    if wallet >= amount:
-        subtractMoney(amount)
-        print("Subtracted " + str(amount) + " from wallet")
-        print("New amount " + str(getMoney()) + " in wallet")
-    else:
-        print("Not enough money")
-
-    try:
-        return ('', 204)
     except Exception as e:
         return str(e)
 
@@ -165,6 +145,15 @@ def clearWalletListings():
     text_file.write("[]")
     text_file.close()
 
+def clearEvaluation():
+    print("Clearing Evaluation")
+    text_file = open("static/json/evaluation.json", "wt")
+    text_file.write("[]")
+    text_file.close()
+
+    text_file = open("static/json/total_evaluation.json", "wt")
+    text_file.write("[]")
+    text_file.close()
 
 # set main method
 if __name__ == "__main__":
