@@ -53,7 +53,7 @@ let createTaskCard = (cryptoListing) => {
     amount.name = "amount-purchased";
     amount.value = "0";
     amount.min = "1";
-    /* amount.max = "5000"; */
+    amount.max = getMoney();
 
     let priceSend = document.createElement("input");
     priceSend.className = "hidden";
@@ -133,6 +133,17 @@ let initListOfCrypto = () => {
             });
     }
 };
+
+function getMoney() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("money-in-wallet").innerHTML = "€" + this.responseText;
+        }
+    };
+    xhttp.open("GET", "/get-money/", true);
+    xhttp.send();
+}
 
 window.onload = function() {
     initListOfCrypto();

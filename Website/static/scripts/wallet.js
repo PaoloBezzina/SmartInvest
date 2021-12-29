@@ -54,7 +54,7 @@ if (document.getElementById("wallet-script").getAttribute("data-file-path")) {
     filePath = "json/walletListings.json";
 }
 
-let initListOfCrypto = () => {
+let initList = () => {
     /* if walletList is not initialised, getCryptoListings */
     if (walletList.length == 0) {
         getCryptoListings()
@@ -81,6 +81,18 @@ let initListOfCrypto = () => {
     }
 };
 
+function getMoney() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("money-in-wallet").innerHTML = "€" + this.responseText;
+        }
+    };
+    xhttp.open("GET", "/get-money/", true);
+    xhttp.send();
+}
+
 window.onload = function() {
-    initListOfCrypto();
+    initList();
+    getMoney();
 };

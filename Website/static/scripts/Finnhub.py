@@ -245,6 +245,7 @@ def initialiseFiles(date):
 
 
 global amountInWallet
+amountInWallet = 5000
 
 def getMoney():
     return amountInWallet

@@ -38,7 +38,6 @@ dateString, randDate = getRandomDate()
 
 @app.before_first_request
 def before_first_request():
-    setMoney(startAmount)
     initialiseFiles(randDate)
 
 @app.route('/')
@@ -81,16 +80,30 @@ def refreshEnvironment():
 def addListing():
     if request.method == 'POST':
         code = request.form['code']
-        amount = request.form['amount-purchased']
+        amountInvested = request.form['amount-purchased']
         price = request.form['price']
         type = request.form['type']
 
         print(code)
-        print(amount)
+        print(amountInvested)
         print(price)
         print(type)
 
-        addTransaction(code, amount, price, type)
+        # get amount to subtract from wallet
+        amountToSubtract = float(amountInvested)
+
+        # get current wallet money
+        walletAmount = float(getMoney())
+
+        # if there is enough money remove money from wallet
+        if walletAmount >= amountToSubtract:
+            subtractMoney(amountToSubtract)
+            addTransaction(code, amountInvested, price, type)
+
+            print("Subtracted " + str(amountToSubtract) + " from wallet")
+            print("New amount " + str(getMoney()) + " in wallet")
+        else:
+            print("Not enough money")
         
     else:
         print("error getting coin code")
@@ -116,7 +129,7 @@ def getmoney():
     print(getMoney())
 
     try:
-        return ('', 204)
+        return (str(getMoney()))
     except Exception as e:
         return str(e)
 
