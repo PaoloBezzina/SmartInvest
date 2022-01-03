@@ -45,10 +45,12 @@
         <!-- PAGE CONTENT -->
         <div class="main-content">
             <h1 class="col-sm-3">Stocks</h1>
+
             <div class="col-sm-offset-4 col-sm-3 col-sm-offset-2">
                 <!-- display text with id money-in-wallet -->
-                <p>Money in Wallet: <span class="h2" id="money-in-wallet">{{money}}</span></p>
+                <p>Available to Invest: <span class="h2" id="money-in-wallet">{{money}}</span></p>
             </div>
+
             <script id="stocks-script" data-file-path="{{url_for('static',filename='json/stocksListings.json')}}" src="{{url_for('static',filename='scripts/stocks.js')}}"></script>
             <div id="stocks-card-container" class="row" id="card-container"></div>
         </div>

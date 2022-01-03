@@ -10,9 +10,9 @@ from currency_converter import CurrencyConverter
 
 key = "c6noq5iad3ibe15jd2e0"
 stock_codes_list = ['AAPL', 'AMZN', 'GOOGL', 'TSLA',
-                    'GME', 'SNAP', 'MRNA', 'BB', 'MANU', 'AAL']
+                    'GME', 'SNAP', 'MRNA', 'BB', 'MANU', 'AAL', 'STNE', 'GOCO', 'PSFE', 'PTON']
 stock_names_list = ["Apple", "Amazon", "Google", "Tesla", "Gamestop", "Snapchat", "Moderna",
-                    "BlackBerry", "Manchester United", "American Airlines"]
+                    "BlackBerry", "Manchester United", "American Airlines", "StoneCo Ltd.", "GoHealth Inc.", "Paysafe Ltd.", "Peloton Interactive Inc."]
 
 finnhub_client = finnhub.Client(api_key=key)  # FinnHub Crypto/Stocks API
 
@@ -27,15 +27,17 @@ def convertDateToUnix(day, month, year):
     return int(timestamp)
 
 
-def getStockPrice(stock_code, day, month, year): 
+def getStockPrice(stock_code, day, month, year):
     """ This function returns the specified stock price @ a particular date """
-    
+
     c = CurrencyConverter()  # currency convertor API
-    
-    to_date = convertDateToUnix(day, month, year)  # converting date to unix - from
+
+    # converting date to unix - from
+    to_date = convertDateToUnix(day, month, year)
     from_date = to_date - 86400*7  # for utility purposes
-    
-    price = finnhub_client.stock_candles(stock_code, 'D', from_date, to_date)['c'][-1]
+
+    price = finnhub_client.stock_candles(
+        stock_code, 'D', from_date, to_date)['c'][-1]
     return round(c.convert(price, 'USD', 'EUR'), 2)
 
 
@@ -76,7 +78,7 @@ def convertStocksToJSON(stock_codes, stock_names, day, month, year):
         temp_dict["title"] = name
         temp_dict["value"] = value
         temp_dict["href"] = "/simulate"
-        #temp_dict["info"] = webpage_url+name+"/"
+        temp_dict["info"] = "https://finance.yahoo.com/quote/"+key+"/"
         json.append(temp_dict)
 
     json_str = str(json)
@@ -178,13 +180,13 @@ def addTransaction(code, amount, price, type_name, stock_names=stock_names_list,
     text_file.close()
 
 
-def evaluation(wallet_amount):
+def evaluation(wallet_amount, total_past_value, interestRate):
     """ This function is used to give the final evaluation on the ROI from the transaction/s """
 
     with open('static/json/walletListings.json') as f:
         data = json.load(f)
 
-    total_past_value_amount = 1000
+    total_past_value_amount = total_past_value
     total_current_value_amount = wallet_amount
     evaluation_list = []
     for transaction in data:
@@ -198,9 +200,11 @@ def evaluation(wallet_amount):
         year = int(today[0])
 
         if transaction['type'] == 'Stocks':
-            current_price = getStockPrice(transaction['code'], day, month, year)
+            current_price = getStockPrice(
+                transaction['code'], day, month, year)
         else:
-            current_price = getCryptoPrice(transaction['code'], day, month, year)
+            current_price = getCryptoPrice(
+                transaction['code'], day, month, year)
 
         currVal = calcCurrentValue(current_price, transaction['units'])
         total_current_value_amount += currVal
@@ -216,6 +220,12 @@ def evaluation(wallet_amount):
         temp_dict['roiPerc'] = roi_perc
 
         evaluation_list.append(temp_dict)
+
+    # adding interest to the wallet
+    total_current_value_amount += (wallet_amount * interestRate)
+    interestDict = {'code': "Bank interest", 'pastValue': wallet_amount,
+                    'currentValue': (wallet_amount + (wallet_amount * interestRate)), 'pastPrice': '', 'currentPrice': '', 'roiVal': (wallet_amount * interestRate), 'roiPerc': interestRate*100}
+    evaluation_list.append(interestDict)
 
     total_roi_val, total_roi_perc = calcROI(
         total_current_value_amount, total_past_value_amount)
@@ -234,41 +244,46 @@ def evaluation(wallet_amount):
     n = text_file.write(total_evaluation_str)
     text_file.close()
 
+
 def initialiseFiles(date):
     year, month, day = str(date).split('-')
     day = int(day)
     month = int(month)
     year = int(year)
-    
+
     convertCryptoToJSON(crypto_codes_list, crypto_names_list, day, month, year)
     convertStocksToJSON(stock_codes_list, stock_names_list, day, month, year)
 
 
 global amountInWallet
-amountInWallet = 5000
+amountInWallet = 1000
+
 
 def getMoney():
     return amountInWallet
 
+
 def setMoney(amount):
     global amountInWallet
     amountInWallet = amount
+
 
 def subtractMoney(amount):
     global amountInWallet
     amountInWallet -= amount
     return amountInWallet
 
+
 def subtractCurrentAssets():
-    #read data from json file
+    # read data from json file
     with open('static/json/walletListings.json') as f:
         data = json.load(f)
 
-        #if data is empty, return
+        # if data is empty, return
         if len(data) == 0:
             return
         else:
-            #subtract current assets
+            # subtract current assets
             for transaction in data:
 
                 amount = transaction['value']

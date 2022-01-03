@@ -20,7 +20,7 @@
 <header>
     <title>SmartInvest - An Investment Simulation Environment</title>
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{url_for('static',filename='assets/smartInvestFavicon.ico')}}">
+    <link rel="shortcut icon" type="image/ico" href="{{url_for('static',filename='assets/smartInvestFavicon.ico')}}">
 </header>
 
 <body>
@@ -59,13 +59,13 @@
                 -->
 
                 <!-- random date option -->
-                <p>Date: <span id="date-generated">{{date}}</span></p>
+                <p>Date: <span class="h2" style="margin-top: 10px; margin-bottom: 10px;" id="date-generated">{{date}}</span></p>
                 <!-- <script src="{{url_for('static',filename='scripts/date-selection.js')}}"></script> -->
             </div>
 
             <div class="col-sm-3  align-self-center">
                 <!-- display text with id money-in-wallet -->
-                <p>Money in Wallet: <span class="h2" id="money-in-wallet" style="margin-top: 10px; margin-bottom: 10px;">{{money}}</span></p>
+                <p>Available to Invest: <span class="h2" id="money-in-wallet" style="margin-top: 10px; margin-bottom: 10px;">{{money}}</span></p>
             </div>
 
             <div class="col-sm-3  align-self-center">
@@ -75,8 +75,8 @@
             </div>
 
             <div class="col-sm-12">
-                <h3>Wallet</h3>
-                <p>The current assets you own</p>
+                <h3>Investments</h3>
+                <p>Crypto and/or Stocks investments</p>
             </div>
 
             <!-- Stocks and crypto to simulate -->
@@ -98,10 +98,17 @@
                 <script id="wallet-script" data-file-path="{{url_for('static',filename='json/walletListings.json')}}" src="{{url_for('static',filename='scripts/wallet.js')}}"></script>
             </div>
 
+            <hr>
+
             <!-- a dive with a title and subtitle -->
             <div class="col-sm-4">
                 <h3>Simulation</h3>
-                <p>Simulate the crypto and stock purchased:</p>
+                <p>Simulate your return on invesments to date:</p>
+            </div>
+
+            <div id="evaluation-info" style="visibility: hidden;" class="col-sm-4  align-self-center">
+                <p>Total Value: <span class="h2" id="total-value-simulate" style="margin-top: 10px; margin-bottom: 10px;">{{money}}</span></p>
+                <p>Total Return on Investments: <span class="h2" id="return-on-investments-money" style="margin-top: 10px; margin-bottom: 10px;">{{money}}</span></p>
             </div>
 
             <!-- button which redirects to /evaluate onclick -->
@@ -128,7 +135,7 @@
                     <tbody id="evaluation-table-body">
                     </tbody>
                 </table>
-                <script id="evaluation-script" data-file-path="{{url_for('static',filename='json/evaluation.json')}}" src="{{url_for('static',filename='scripts/updateEvaluation.js')}}"></script>
+                <script id="evaluation-script" data-file-path="{{url_for('static',filename='json/evaluation.json')}}" data-total-file-path="{{url_for('static',filename='json/total_evaluation.json')}}" src="{{url_for('static',filename='scripts/updateEvaluation.js')}}"></script>
             </div>
 
             <!-- <div class="col-sm-4">

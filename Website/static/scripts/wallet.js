@@ -22,7 +22,6 @@ let createTaskCard = (walletListing) => {
     let type = document.createElement("td");
     type.innerText = walletListing.type;
 
-    console.log("TEST");
     rowEntry.appendChild(code);
     rowEntry.appendChild(title);
     rowEntry.appendChild(price);
@@ -61,7 +60,6 @@ let initList = () => {
         getCryptoListings()
             .then((data) => {
                 walletList = data;
-                console.log(walletList);
 
                 if (tableContainer) {
                     document

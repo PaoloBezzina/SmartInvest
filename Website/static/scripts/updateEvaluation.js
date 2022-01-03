@@ -74,7 +74,6 @@ let initEvaluationList = () => {
         getEvaluationListings()
             .then((data) => {
                 evaluationList = data;
-                console.log(evaluationList);
 
                 if (evaluationTableContainer) {
                     document
@@ -95,6 +94,56 @@ let initEvaluationList = () => {
     }
 };
 
+/* ----------------------------------------------------------------------------------------------------------------- */
+let getTotalEvaluationListings = () => {
+    return new Promise((resolve, reject) => {
+        $.getJSON(totalEvaluationFilePath, (data) => {
+            resolve(data);
+        }).fail((error) => {
+            reject(error);
+        });
+    });
+};
+
+var totalEvaluationList = [];
+
+let initTotalEvaluationList = () => {
+    /* if totalEvaluationList is not initialised, getTotalEvaluationListings */
+    if (totalEvaluationList.length == 0) {
+        getTotalEvaluationListings()
+            .then((data) => {
+                totalEvaluationList = data;
+
+                /* change document.getElementById("return-on-investments-money").innerText to mathc the value of totalROIVal from json file */
+                document.getElementById("return-on-investments-money").innerText = "€" + Math.round(totalEvaluationList.totalROIVal * 100) / 100;
+                if (totalEvaluationList.totalROIVal < 0) {
+                    document.getElementById("return-on-investments-money").style.color = "red";
+                } else {
+                    document.getElementById("return-on-investments-money").style.color = "green";
+                }
+
+                /* change document.getElementById("return-on-investments-money").innerText to mathc the value of totalROIVal from json file */
+                document.getElementById("total-value-simulate").innerText = "€" + Math.round(totalEvaluationList.currentValue * 100) / 100;
+
+                document.getElementById("evaluation-info").style.visibility = "visible";
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+};
+
+var totalEvaluationFilePath;
+/* try to read file from element, otherwise read from path */
+if (document.getElementById("evaluation-script").getAttribute("data-total-file-path")) {
+    totalEvaluationFilePath = document
+        .getElementById("evaluation-script")
+        .getAttribute("data-total-file-path");
+} else {
+    totalEvaluationFilePath = "json/total_evaluation.json";
+}
+
 function SubmitForm() {
 
     document.forms['evaluate-form'].action = '/evaluate';
@@ -103,6 +152,7 @@ function SubmitForm() {
     /* wait 2 seconds */
     setTimeout(function() {
         initEvaluationList();
+        initTotalEvaluationList();
     }, 5000);
 
 }

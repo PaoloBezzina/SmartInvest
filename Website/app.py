@@ -1,6 +1,7 @@
 from os import error
+import os
 import random
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory
 from jinja2 import Template
 
 # import local file Finnhub.py from subfolder scripts
@@ -17,7 +18,13 @@ global randDate
 start_date = datetime.date(2021, 1, 1)
 end_date = datetime.date(2021, 12, 31)
 
-startAmount = 5000
+startAmount = 1000
+interestRate = 0.001
+
+def getRandomAmount():
+    amount = random.randint(500, 5000)
+    amount = round(amount/50)*50
+    return amount
 
 def getRandomDate():
     global randDate
@@ -41,9 +48,13 @@ def before_first_request():
     initialiseFiles(randDate)
     subtractCurrentAssets()
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static/assets'), 'smartInvestFavicon.ico', mimetype='image/vnd.microsoft.icon')
+
 @app.route('/')
 def index():
-    return redirect('/dashboard.html')
+    return redirect('/info.html')
 
 
 @app.route('/dashboard.html')
@@ -70,10 +81,13 @@ def load_info():
 def refreshEnvironment():
     clearWalletListings()
     clearEvaluation();
+
     global dateString
     dateString, randDate = getRandomDate()
     initialiseFiles(randDate)
+
     setMoney(startAmount)
+
     return redirect('/dashboard.html')
 
 
@@ -125,7 +139,7 @@ def addListing():
 
 @app.route('/evaluate/', methods=['GET', 'POST'])
 def evaluate():
-    evaluation(startAmount-float(getMoney()))
+    evaluation(getMoney(), startAmount, interestRate)
     try:
         return ('', 204)
     except Exception as e:

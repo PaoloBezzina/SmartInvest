@@ -128,11 +128,11 @@ header .logo span {
 }
 
 .sidebar nav ul li:nth-child(3):hover {
-    background-color: #ccaf8d;
+    background-color: #6649ba;
 }
 
 .sidebar nav ul li:nth-child(3).active {
-    background-color: #ccaf8d;
+    background-color: #6649ba;
 }
 
 .sidebar nav ul li:nth-child(4):hover {
@@ -334,6 +334,14 @@ line.link {
     /* Fallback color */
     background-color: rgba(0, 0, 0, 0.4);
     /* Black w/ opacity */
+}
+
+hr {
+    border-bottom: 10px solid #585858;
+    border-radius: 5px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 
