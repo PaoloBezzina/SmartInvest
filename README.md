@@ -1,9 +1,9 @@
 # SmartInvest: An Investment Simulation Environment
 
-This project was made as part of an initiative to help raise awareness in young adults about the risks involved in investments.
+This project was made as part of an initiative to help raise awareness about the importance of responsible money management for young adults.
 
 ## Description
-The aim of this app is to educate yourself about the risks of investing blindly without any background knowledge of investing and to promote good investment practices. Although this is a simulation, it is based on real-life stock and cryptocurrency data nd provides a next to life simulation which will help you to become familiar with the benefits, but also the unpredictability and dangers of investments.
+The aim of this app is to educate yourself about the risks of investing blindly without any background knowledge of investing and to promote good investment practices. Although this is a simulation, it is based on real-life stock and cryptocurrency data and provides a next to life simulation which will help you to become familiar with the benefits, but also the unpredictability and dangers of investments.
 
 ## Getting Started
 
