@@ -50,9 +50,9 @@ command to run if program contains helper info
 Contributors names and contact info
 
 * Paolo Bezzina - [@PaoloBezzina](https://github.com/PaoloBezzina)
-* Malcolm Agius - [@MalcolmAgius](https://github.com/)
-* Karl Attard - [@KarlAttard](https://gitlab.com/)
-* Mikea Dimech - [@MikeaDimech](https://gitlab.com/)
+* Malcolm Agius - [@malks_4](https://gitlab.com/malks_4)
+* Karl Attard - [@karl.attard.19 ](https://gitlab.com/karl.attard.19)
+* Mikea Dimech - [@mikeadimech](https://gitlab.com/mikeadimech)
 
 <!-- 
 ## License
