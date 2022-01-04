@@ -1,0 +1,5 @@
+currency_converter==0.5.5
+CurrencyConverter==0.16.6
+finnhub_python==2.4.6
+Flask==2.0.2
+Jinja2==3.0.2
