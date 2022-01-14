@@ -30,7 +30,7 @@ pip install -r requirements.txt
 ### Executing program
 
 * Open a terminal
-* cd to current directory
+* cd to current directory containing 'app.py'
 * Run the following command
 ```
 python -m flask run
